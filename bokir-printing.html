@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BOKIR & CO. — Digital Fabric Printing & Produksi</title>
+<meta name="description" content="Jasa digital printing kain dan produksi hijab, pakaian muslim, jersey, dan apparel — dari desain sampai barang jadi.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   TOKENS — ganti warna / font di sini
+   ========================================================= */
+:root{
+  --bg:#EEE7E0;
+  --ink:#2E1A14;
+  --brown:#3F2219;
+  --brown-2:#5A3A30;
+  --muted:#7A6960;
+  --line:rgba(46,26,20,.18);
+  --white:#FBF8F5;
+  --font:"Helvetica Neue","Inter Tight",Helvetica,Arial,sans-serif;
+  --pad:clamp(16px,4vw,56px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.45;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.wrap{padding-left:var(--pad);padding-right:var(--pad);max-width:1600px;margin:0 auto}
+
+/* Foto: background-image + warna cadangan (--c) kalau foto gagal dimuat */
+.ph{background:linear-gradient(135deg,var(--c,#6b4a3c),#2c1a14) center/cover no-repeat;position:relative;overflow:hidden}
+.ph::after{content:"";position:absolute;inset:0;background-image:var(--img);background-size:cover;background-position:center;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.zoom:hover .ph::after,.ph.zoom:hover::after{transform:scale(1.05)}
+
+.guides{position:absolute;inset:0;pointer-events:none;display:grid;grid-template-columns:repeat(4,1fr);padding:0 var(--pad);z-index:1}
+.guides span{border-left:1px solid rgba(255,255,255,.14)}
+.guides span:last-child{border-right:1px solid rgba(255,255,255,.14)}
+
+/* ================= NAV ================= */
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px var(--pad);color:var(--white);transition:background .4s,color .4s,padding .4s}
+.nav.solid{background:rgba(238,231,224,.92);backdrop-filter:blur(10px);color:var(--ink);padding:12px var(--pad);border-bottom:1px solid var(--line)}
+.logo{font-size:18px;font-weight:500;letter-spacing:-.02em}
+.menu{display:flex;gap:22px}
+.menu a{font-size:11px;letter-spacing:.06em;text-transform:uppercase;opacity:.85}
+.menu a:hover{opacity:1}
+.nav-cta{font-size:11px;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid currentColor;padding-bottom:2px}
+.burger{display:none;background:none;border:0;color:inherit;cursor:pointer;width:26px;height:18px;position:relative}
+.burger span{position:absolute;left:0;right:0;height:1.5px;background:currentColor;transition:.3s}
+.burger span:nth-child(1){top:0}.burger span:nth-child(2){top:8px}.burger span:nth-child(3){top:16px}
+.drawer{position:fixed;inset:0;background:var(--brown);color:var(--white);z-index:40;display:flex;flex-direction:column;justify-content:center;padding:var(--pad);gap:14px;transform:translateY(-100%);visibility:hidden;transition:transform .6s cubic-bezier(.7,0,.2,1),visibility 0s .6s}
+.drawer a{font-size:clamp(28px,9vw,40px);text-transform:uppercase;letter-spacing:-.03em;line-height:1}
+body.open .drawer{transform:none;visibility:visible;transition:transform .6s cubic-bezier(.7,0,.2,1)}
+body.open .nav{color:var(--white);background:transparent;border-color:transparent}
+
+/* ================= HERO ================= */
+.hero{position:relative;height:100svh;min-height:620px;color:var(--white);background:var(--brown)}
+.hero>.ph{position:absolute;inset:0}
+.hero>.ph::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(20,10,6,.4),rgba(20,10,6,.05) 40%,rgba(20,10,6,.5))}
+.hero-inner{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:center;padding:0 var(--pad)}
+.hero small{font-size:12px;opacity:.85;margin-bottom:10px;display:block}
+.hero h1{font-weight:400;font-size:clamp(50px,9vw,148px);line-height:.86;letter-spacing:-.055em;text-transform:uppercase}
+.hero h1 span{display:block}
+.hero h1 .l2{padding-left:.4em}
+.hero h1 .l3{padding-left:2.6em}
+.hero-side{position:absolute;right:var(--pad);bottom:48px;z-index:2;text-align:right;max-width:250px}
+.hero-side p{font-size:13px;line-height:1.3;margin-bottom:16px}
+.hero-tags{position:absolute;left:var(--pad);bottom:52px;z-index:2;display:flex;gap:8px;flex-wrap:wrap;max-width:50%}
+.hero-tags span{font-size:10px;letter-spacing:.08em;text-transform:uppercase;border:1px solid rgba(255,255,255,.4);border-radius:999px;padding:6px 12px}
+.pill{display:inline-flex;align-items:center;gap:8px;background:var(--white);color:var(--ink);border-radius:999px;padding:11px 26px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;transition:background .3s,color .3s}
+.pill:hover{background:var(--brown);color:var(--white)}
+.pill.dark{background:var(--brown);color:var(--white)}
+.pill.dark:hover{background:var(--ink)}
+
+/* ================= COMMON ================= */
+section{position:relative}
+.shead{display:flex;align-items:baseline;gap:10px;margin-bottom:44px;flex-wrap:wrap}
+.shead sup{font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+.shead h2{font-weight:400;font-size:clamp(42px,6vw,92px);letter-spacing:-.05em;line-height:.9;text-transform:uppercase}
+.sub{max-width:420px;font-size:14px;color:var(--brown-2)}
+.head-row{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:44px}
+.head-row .shead{margin:0}
+.more{display:inline-block;margin-top:12px;font-size:11px;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid currentColor}
+
+/* ================= MARQUEE ================= */
+.marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;padding:16px 0;white-space:nowrap}
+.marquee div{display:inline-flex;gap:48px;animation:mq 38s linear infinite;padding-right:48px}
+.marquee span{font-size:clamp(20px,2.4vw,34px);letter-spacing:-.04em;text-transform:uppercase}
+.marquee i{font-style:normal;color:var(--muted)}
+@keyframes mq{to{transform:translateX(-100%)}}
+
+/* ================= ABOUT ================= */
+.about{padding-top:130px;padding-bottom:120px}
+.about-grid>*,.stats>*,.faq-grid>*,.mat-grid>*{min-width:0}
+.about-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:start}
+.about h2{font-weight:400;font-size:clamp(42px,6vw,92px);letter-spacing:-.05em;line-height:.9;text-transform:uppercase;display:flex;align-items:baseline;gap:.2em;flex-wrap:wrap}
+.about h2 sup{font-size:12px;letter-spacing:0}
+.about h2 .amp{font-size:.25em;letter-spacing:0}
+.about .lead{max-width:400px;margin-top:22px;font-size:14px;color:var(--brown-2)}
+.stats{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line)}
+.stat{min-height:200px;padding:18px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+.stat:nth-child(2n){border-right:0}
+.stat:nth-child(n+3){border-bottom:0}
+.stat p{font-size:12px;line-height:1.3;max-width:130px;color:var(--brown-2)}
+.stat b{font-weight:400;font-size:clamp(38px,4.4vw,66px);letter-spacing:-.05em;line-height:.85;white-space:nowrap}
+.stat.dark{background:var(--brown);color:var(--white);flex-direction:column;align-items:flex-start;justify-content:space-between}
+.stat.dark p{color:var(--white);max-width:220px;font-size:14px}
+.stat.dark a{font-size:11px;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid currentColor}
+
+/* ================= SERVICES ================= */
+.services{padding-top:40px;padding-bottom:110px}
+.svc-top{display:grid;grid-template-columns:1.2fr 1fr;gap:6px;margin-bottom:6px}
+.svc-bot{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.svc-top .ph{aspect-ratio:4/3}
+.svc-bot .ph{aspect-ratio:3/4}
+.svc-meta{display:flex;justify-content:space-between;gap:16px;padding:12px 0 30px}
+.svc-meta h3{font-weight:500;font-size:clamp(14px,1.3vw,19px);line-height:1.02;text-transform:uppercase;letter-spacing:-.01em;max-width:260px}
+.svc-meta ul{list-style:none;font-size:11px;color:var(--muted);text-align:right;line-height:1.35;flex:none;max-width:48%}
+.num{font-size:11px;color:var(--muted)}
+
+/* ================= MATERIAL ================= */
+.material{padding-top:40px;padding-bottom:120px}
+.mat-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.mat-feature{background:var(--brown);color:var(--white);padding:clamp(22px,3vw,40px);display:flex;flex-direction:column;justify-content:space-between;gap:40px;min-height:460px}
+.mat-feature h3{font-weight:400;font-size:clamp(34px,4vw,60px);letter-spacing:-.05em;line-height:.9;text-transform:uppercase}
+.mat-feature .ft{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.18)}
+.mat-feature .ft div{background:var(--brown);padding:14px;font-size:12px}
+.mat-feature .ft b{display:block;font-weight:500;text-transform:uppercase;font-size:13px;margin-bottom:4px}
+.mat-list{border-top:1px solid var(--line)}
+.mat-row{display:grid;grid-template-columns:40px 1fr auto;gap:16px;align-items:baseline;padding:18px 0;border-bottom:1px solid var(--line)}
+.mat-row h4{font-weight:400;font-size:clamp(20px,2vw,30px);letter-spacing:-.04em;text-transform:uppercase;line-height:1}
+.mat-row p{font-size:12px;color:var(--muted);margin-top:6px;max-width:360px}
+.mat-row em{font-style:normal;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--brown-2);white-space:nowrap}
+
+.swatch-head{display:flex;justify-content:space-between;align-items:baseline;gap:20px;margin:70px 0 18px;flex-wrap:wrap}
+.swatch-head h3{font-weight:400;font-size:clamp(22px,2.4vw,36px);letter-spacing:-.04em;text-transform:uppercase}
+.swatch-head span{font-size:12px;color:var(--muted)}
+.swatches{display:grid;grid-template-columns:repeat(12,1fr);gap:6px}
+.sw{aspect-ratio:3/5;background:var(--sw);position:relative;cursor:pointer;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.sw:hover{transform:translateY(-10px)}
+.sw span{position:absolute;left:8px;bottom:8px;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--t,#fff);line-height:1.1}
+.sw-name{margin-top:14px;font-size:13px;text-transform:uppercase;letter-spacing:.02em;min-height:1.4em}
+
+/* ================= PRODUCTS ================= */
+.products{padding-top:40px;padding-bottom:120px}
+.pr-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,2vw,28px)}
+.pr .ph{aspect-ratio:3/4.3}
+.pr:nth-child(2n){margin-top:70px}
+.pr h3{font-weight:500;font-size:16px;text-transform:uppercase;margin-top:14px;letter-spacing:-.01em;display:flex;justify-content:space-between;gap:10px}
+.pr p{font-size:12px;color:var(--muted);margin-top:6px;max-width:260px}
+
+/* ================= PROCESS ================= */
+.process{padding-top:40px;padding-bottom:130px}
+.proc-row{display:grid;grid-template-columns:60px 110px 1fr 320px;align-items:center;gap:24px;padding:14px var(--pad);margin:0 calc(var(--pad)*-1);border-bottom:1px solid var(--line);transition:background .45s,color .45s}
+.proc-row:first-child{border-top:1px solid var(--line)}
+.proc-row .n{font-size:12px}
+.proc-row .ph{width:100%;aspect-ratio:3/2}
+.proc-row h3{font-weight:400;font-size:clamp(24px,3.3vw,50px);letter-spacing:-.04em;text-transform:uppercase;line-height:1;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.proc-row p{font-size:12px;line-height:1.35;color:var(--muted);transition:color .45s}
+.proc-row:hover,.proc-row.active{background:var(--brown);color:var(--white)}
+.proc-row:hover p,.proc-row.active p{color:rgba(251,248,245,.8)}
+.proc-row:hover h3{transform:translateX(10px)}
+
+/* ================= BAND ================= */
+.band{height:80vh;min-height:460px;color:var(--white);display:flex;align-items:flex-end;background:var(--brown)}
+.band>.ph{position:absolute;inset:0}
+.band>.ph::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(0deg,rgba(20,10,6,.6),transparent 60%)}
+.band .wrap{position:relative;z-index:2;width:100%;padding-bottom:56px;display:flex;justify-content:space-between;align-items:flex-end;gap:30px;flex-wrap:wrap}
+.band h2{font-weight:400;font-size:clamp(32px,5vw,80px);letter-spacing:-.05em;line-height:.9;text-transform:uppercase;max-width:900px}
+.band p{max-width:280px;font-size:13px}
+
+/* ================= PORTFOLIO ================= */
+.portfolio{padding-top:130px;padding-bottom:110px}
+.pf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,3vw,48px)}
+.pf .ph{aspect-ratio:3/4}
+.pf:nth-child(2){margin-top:80px}
+.pf h3{font-weight:500;font-size:16px;text-transform:uppercase;margin-top:14px}
+.pf .tag{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--brown-2);margin-top:4px}
+.pf p{font-size:12px;color:var(--muted);max-width:260px;margin-top:6px}
+.pf:nth-child(3){text-align:right}
+.pf:nth-child(3) p{margin-left:auto}
+
+/* ================= FAQ ================= */
+.faq{padding-top:40px;padding-bottom:130px}
+.faq-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:40px}
+.faq-item{border-top:1px solid var(--line)}
+.faq-item:last-child{border-bottom:1px solid var(--line)}
+.faq-q{width:100%;background:none;border:0;color:inherit;font:inherit;text-align:left;display:flex;justify-content:space-between;gap:20px;padding:22px 0;cursor:pointer;font-size:clamp(17px,1.8vw,26px);text-transform:uppercase;letter-spacing:-.03em;line-height:1.05}
+.faq-q i{font-style:normal;font-size:22px;transition:transform .35s;flex:none}
+.faq-a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s}
+.faq-a>div{overflow:hidden}
+.faq-a p{font-size:14px;color:var(--brown-2);max-width:560px;padding-bottom:22px}
+.faq-item.open .faq-a{grid-template-rows:1fr}
+.faq-item.open .faq-q i{transform:rotate(45deg)}
+
+/* ================= CTA ================= */
+.cta{padding-top:120px;padding-bottom:160px;text-align:center;overflow:hidden}
+.cta h2{font-weight:500;font-size:clamp(46px,9.5vw,165px);letter-spacing:-.06em;line-height:.85;text-transform:uppercase;position:relative;z-index:2}
+.cta p{font-size:14px;color:var(--brown-2);margin:26px auto 30px;max-width:380px;position:relative;z-index:2}
+.cta .btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;position:relative;z-index:2}
+.pill.line{background:transparent;border:1px solid var(--ink)}
+.float{position:absolute;z-index:1}
+.float.a{width:9vw;aspect-ratio:3/4;left:6%;top:12%}
+.float.b{width:7vw;aspect-ratio:4/5;right:14%;top:8%}
+.float.c{width:11vw;aspect-ratio:4/3;left:22%;bottom:10%}
+.float.d{width:6vw;aspect-ratio:3/4;right:26%;bottom:6%}
+.float.e{width:5vw;aspect-ratio:1;right:5%;top:42%}
+
+/* ================= FOOTER ================= */
+footer{background:var(--brown);color:var(--white);padding:56px 0 28px;overflow:hidden}
+.foot{display:grid;grid-template-columns:2fr 1fr 1fr;gap:30px;font-size:12px;text-transform:uppercase;letter-spacing:.03em}
+.foot h4{font-weight:400;opacity:.6;margin-bottom:18px;font-size:11px}
+.foot li{list-style:none;margin-bottom:8px;line-height:1.4}
+.foot a:hover{opacity:.6}
+.foot .r{text-align:right}
+.bigmark{white-space:nowrap;font-size:clamp(40px,13vw,240px);font-weight:500;letter-spacing:-.07em;line-height:.8;margin-top:70px}
+
+/* WhatsApp floating */
+.wa{position:fixed;right:18px;bottom:18px;z-index:45;background:var(--brown);color:var(--white);border-radius:999px;padding:12px 18px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;gap:8px;box-shadow:0 10px 30px rgba(46,26,20,.25);transition:transform .3s}
+.wa:hover{transform:translateY(-3px)}
+.wa i{width:8px;height:8px;border-radius:50%;background:#7BD88F;display:block}
+
+/* ================= REVEAL ================= */
+.rv{opacity:0;transform:translateY(40px);transition:opacity 1s ease,transform 1s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+.hero h1 span{opacity:0;transform:translateY(60px);animation:rise 1.2s cubic-bezier(.2,.7,.2,1) forwards}
+.hero h1 span:nth-child(2){animation-delay:.12s}
+.hero h1 span:nth-child(3){animation-delay:.24s}
+@keyframes rise{to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.rv,.hero h1 span{opacity:1;transform:none;animation:none;transition:none}.marquee div{animation:none}}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width:1000px){
+  .svc-bot{grid-template-columns:1fr 1fr}
+  .swatches{grid-template-columns:repeat(6,1fr)}
+  .pr-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:900px){
+  .menu,.nav-cta{display:none}
+  .burger{display:block}
+  .guides{grid-template-columns:repeat(2,1fr)}
+  .hero h1 .l3{padding-left:1.2em}
+  .hero-side{left:var(--pad);right:var(--pad);text-align:right;max-width:none;bottom:40px}
+  .hero-tags{display:none}
+  .about-grid,.faq-grid,.mat-grid,.svc-top{grid-template-columns:1fr}
+  .mat-feature{min-height:0}
+  .proc-row{grid-template-columns:28px 1fr;gap:6px 14px}
+  .proc-row .ph{display:none}
+  .proc-row h3{font-size:22px}
+  .proc-row p{grid-column:2}
+  .pf-grid{grid-template-columns:1fr 1fr}
+  .pf:nth-child(2){margin-top:0}
+  .pf:nth-child(3){grid-column:1/-1;text-align:left}
+  .pf:nth-child(3) p{margin-left:0}
+  .float{display:none}
+  .foot{grid-template-columns:1fr 1fr}
+  .foot .r{text-align:left}
+}
+@media (max-width:520px){
+  .stat{min-height:150px;padding:14px}
+  .stat b{font-size:34px}
+  .svc-bot{grid-template-columns:1fr}
+  .svc-bot .ph{aspect-ratio:4/3}
+  .pr:nth-child(2n){margin-top:40px}
+  .pf-grid{grid-template-columns:1fr}
+  .foot{grid-template-columns:1fr}
+  .mat-feature .ft{grid-template-columns:1fr}
+  .wa span{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="nav" id="nav">
+  <a href="#top" class="logo">BOKIR &amp; CO.</a>
+  <nav class="menu">
+    <a href="#about">Tentang</a><a href="#services">Layanan</a><a href="#material">Material</a>
+    <a href="#products">Produk</a><a href="#process">Cara Order</a><a href="#portfolio">Portfolio</a><a href="#faq">FAQ</a>
+  </nav>
+  <a href="#contact" class="nav-cta">Konsultasi gratis ›</a>
+  <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</header>
+<div class="drawer" id="drawer">
+  <a href="#about">Tentang</a><a href="#services">Layanan</a><a href="#material">Material</a>
+  <a href="#products">Produk</a><a href="#process">Cara Order</a><a href="#portfolio">Portfolio</a><a href="#contact">Kontak</a>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="ph" style="--c:#8a5a48;--img:url('https://images.unsplash.com/photo-1558171813-4c088753af8f?w=2000&q=80')"></div>
+  <div class="guides"><span></span><span></span><span></span><span></span></div>
+  <div class="hero-inner">
+    <small>Your one stop fabric printing partner</small>
+    <h1><span>We print</span><span class="l2">the story of</span><span class="l3">your brand</span></h1>
+  </div>
+  <div class="hero-tags"><span>Hijab</span><span>Pakaian muslim</span><span>Jersey</span><span>Scarf</span><span>Apparel</span></div>
+  <div class="hero-side">
+    <p>Dari desain, printing kain, sampai barang jadi siap jual — satu tempat untuk koleksi brand kamu.</p>
+    <a href="#contact" class="pill js-wa">Konsultasi sekarang</a>
+  </div>
+</section>
+
+<!-- ============ MARQUEE ============ -->
+<div class="marquee" aria-hidden="true"><div>
+  <span>Sublimation</span><i>✦</i><span>Direct to fabric</span><i>✦</i><span>Full production</span><i>✦</i><span>Digital flat knit</span><i>✦</i><span>Design &amp; branding</span><i>✦</i><span>Photoshoot</span><i>✦</i>
+</div><div>
+  <span>Sublimation</span><i>✦</i><span>Direct to fabric</span><i>✦</i><span>Full production</span><i>✦</i><span>Digital flat knit</span><i>✦</i><span>Design &amp; branding</span><i>✦</i><span>Photoshoot</span><i>✦</i>
+</div></div>
+
+<!-- ============ ABOUT ============ -->
+<section class="about wrap" id="about">
+  <div class="about-grid">
+    <div class="rv">
+      <h2><sup>at</sup>BOKIR<span class="amp">&amp;</span>CO.,</h2>
+      <p class="lead">Kami percaya setiap motif punya cerita. Sebagai partner printing dan produksi, kami membantu brand hijab, modest wear, dan apparel mewujudkan koleksinya — dengan warna yang tajam, bahan yang nyaman, dan hasil yang konsisten dari sampel pertama sampai ribuan pcs.</p>
+    </div>
+    <div class="stats rv">
+      <!-- GANTI angka di bawah dengan data asli brand kamu -->
+      <div class="stat"><p>tahun berpengalaman di digital fabric printing.</p><b>7+</b></div>
+      <div class="stat"><p>brand lokal yang sudah mempercayakan produksinya.</p><b>150+</b></div>
+      <div class="stat"><p>pilihan warna dalam satu cetakan untuk detail yang lebih hidup.</p><b>8</b></div>
+      <div class="stat dark"><p>Bukan sekadar mencetak kain — kami ikut menjaga kualitas brand kamu.</p><a href="#services">Lihat layanan ›</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICES ============ -->
+<section class="services wrap" id="services">
+  <div class="head-row">
+    <div class="shead rv"><sup>What we</sup><h2>Services</h2></div>
+    <p class="sub rv">Pilih metode sesuai kebutuhan koleksi — atau serahkan semuanya ke kami, dari konsep sampai packing.</p>
+  </div>
+
+  <div class="svc-top">
+    <div class="svc zoom rv">
+      <div class="ph" style="--c:#7d5646;--img:url('https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=1400&q=80')"></div>
+      <div class="svc-meta"><div><h3>Sublimation printing</h3><span class="num">01</span></div>
+        <ul><li>Hijab &amp; scarf printing</li><li>Jersey full print</li><li>Warna tajam, tidak luntur</li></ul></div>
+    </div>
+    <div class="svc zoom rv">
+      <div class="ph" style="--c:#5e3d31;--img:url('https://images.unsplash.com/photo-1605518216938-7c31b7b14ad0?w=1400&q=80')"></div>
+      <div class="svc-meta"><div><h3>Direct to fabric printing</h3><span class="num">02</span></div>
+        <ul><li>Cetak langsung di kain</li><li>Hingga 8 warna tinta</li><li>Cocok untuk katun &amp; voile</li></ul></div>
+    </div>
+  </div>
+  <div class="svc-bot">
+    <div class="svc zoom rv">
+      <div class="ph" style="--c:#6b4a3c;--img:url('https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=1000&q=80')"></div>
+      <div class="svc-meta"><div><h3>Full production (FOB)</h3><span class="num">03</span></div>
+        <ul><li>Print, jahit, finishing</li><li>Quality control</li><li>Parfum &amp; packing</li></ul></div>
+    </div>
+    <div class="svc zoom rv">
+      <div class="ph" style="--c:#4a2e25;--img:url('https://images.unsplash.com/photo-1584992236310-6edddc08acff?w=1000&q=80')"></div>
+      <div class="svc-meta"><div><h3>Digital flat knit</h3><span class="num">04</span></div>
+        <ul><li>Knitwear &amp; cardigan</li><li>Aksesoris rajut</li><li>Beragam teknik knit</li></ul></div>
+    </div>
+    <div class="svc zoom rv">
+      <div class="ph" style="--c:#8a6250;--img:url('https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=1000&q=80')"></div>
+      <div class="svc-meta"><div><h3>Design &amp; branding</h3><span class="num">05</span></div>
+        <ul><li>Desain motif</li><li>Styling koleksi</li><li>Label &amp; hangtag</li></ul></div>
+    </div>
+    <div class="svc zoom rv">
+      <div class="ph" style="--c:#3f2a22;--img:url('https://images.unsplash.com/photo-1492707892479-7bc8d5a4ee93?w=1000&q=80')"></div>
+      <div class="svc-meta"><div><h3>Photoshoot &amp; video</h3><span class="num">06</span></div>
+        <ul><li>Foto katalog</li><li>Video campaign</li><li>Konten siap posting</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MATERIAL ============ -->
+<section class="material wrap" id="material">
+  <div class="head-row">
+    <div class="shead rv"><sup>Our</sup><h2>Materials</h2></div>
+    <p class="sub rv">Bahan pilihan untuk iklim tropis — ringan, adem, dan tetap jatuh sempurna saat dipakai.</p>
+  </div>
+
+  <div class="mat-grid">
+    <div class="mat-feature rv">
+      <div><span class="num" style="color:rgba(255,255,255,.6)">Signature finish</span><h3 style="margin-top:12px">Cool touch<br>finish</h3></div>
+      <div class="ft">
+        <div><b>Adem</b>Terasa sejuk di kulit sepanjang hari.</div>
+        <div><b>Cepat kering</b>Nyaman untuk aktivitas padat.</div>
+        <div><b>Breathable</b>Sirkulasi udara lebih baik.</div>
+        <div><b>Easy care</b>Mudah dicuci, minim kusut.</div>
+      </div>
+    </div>
+    <div class="mat-list rv">
+      <div class="mat-row"><span class="num">01</span><div><h4>Premium voile</h4><p>Tipis, lembut, dan mudah dibentuk — favorit untuk hijab segi empat.</p></div><em>Hijab · Scarf</em></div>
+      <div class="mat-row"><span class="num">02</span><div><h4>Voile lindsay</h4><p>Tekstur halus dengan hasil print yang lebih tajam dan kaya warna.</p></div><em>Hijab premium</em></div>
+      <div class="mat-row"><span class="num">03</span><div><h4>Premium polyester</h4><p>Kuat, warna awet, ideal untuk sublimasi dan produksi volume besar.</p></div><em>Hijab · Gamis</em></div>
+      <div class="mat-row"><span class="num">04</span><div><h4>Dri-fit &amp; milano</h4><p>Menyerap keringat dan elastis — untuk jersey tim dan sportswear.</p></div><em>Jersey</em></div>
+      <div class="mat-row"><span class="num">05</span><div><h4>Organic cotton</h4><p>Natural, lembut, dan ramah kulit untuk apparel harian.</p></div><em>Apparel</em></div>
+    </div>
+  </div>
+
+  <div class="swatch-head rv"><h3>Plain voile colors</h3><span>Arahkan kursor / ketuk untuk melihat nama warna</span></div>
+  <div class="swatches rv" id="swatches"></div>
+  <div class="sw-name" id="swName">&nbsp;</div>
+</section>
+
+<!-- ============ PRODUCTS ============ -->
+<section class="products wrap" id="products">
+  <div class="head-row">
+    <div class="shead rv"><sup>What we</sup><h2>Produce</h2></div>
+    <p class="sub rv">Dari satu lembar sampel sampai ribuan pcs siap kirim ke gudang kamu.</p>
+  </div>
+  <div class="pr-grid">
+    <article class="pr zoom rv">
+      <div class="ph" style="--c:#8a5a48;--img:url('https://images.unsplash.com/photo-1609357605129-26f69add5d6e?w=900&q=80')"></div>
+      <h3>Hijab &amp; scarf <span class="num">01</span></h3><p>Segi empat, pashmina, instan — printing motif custom atau polos.</p>
+    </article>
+    <article class="pr zoom rv">
+      <div class="ph" style="--c:#6b4a3c;--img:url('https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=900&q=80')"></div>
+      <h3>Pakaian muslim <span class="num">02</span></h3><p>Gamis, tunik, outer, dan set koko dengan motif eksklusif brand.</p>
+    </article>
+    <article class="pr zoom rv">
+      <div class="ph" style="--c:#4a2e25;--img:url('https://images.unsplash.com/photo-1577212017184-80cc0da11082?w=900&q=80')"></div>
+      <h3>Jersey <span class="num">03</span></h3><p>Jersey tim, komunitas, dan event — full print sublimasi, nama &amp; nomor.</p>
+    </article>
+    <article class="pr zoom rv">
+      <div class="ph" style="--c:#7d5646;--img:url('https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=900&q=80')"></div>
+      <h3>Apparel &amp; aksesoris <span class="num">04</span></h3><p>Kaos, kemeja, knitwear, pouch, dan merchandise kain lainnya.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ============ PROCESS ============ -->
+<section class="process wrap" id="process">
+  <div class="shead rv"><sup>How to</sup><h2>Order</h2></div>
+  <div class="proc">
+    <div class="proc-row"><span class="n">1.</span><div class="ph" style="--c:#8a5a48;--img:url('https://images.unsplash.com/photo-1556745757-8d76bdb6984b?w=400&q=70')"></div><h3>Konsultasi</h3><p>Ceritakan konsep, jumlah, target harga, dan jadwal launching. Kami bantu pilih bahan dan metode yang paling pas.</p></div>
+    <div class="proc-row active"><span class="n">2.</span><div class="ph" style="--c:#6b4a3c;--img:url('https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=400&q=70')"></div><h3>Desain &amp; sampling</h3><p>Kirim file desain atau biarkan tim kami yang membuat. Sampel dicetak supaya kamu bisa cek warna dan bahan langsung.</p></div>
+    <div class="proc-row"><span class="n">3.</span><div class="ph" style="--c:#5e3d31;--img:url('https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=400&q=70')"></div><h3>Approval</h3><p>Setelah sampel disetujui, kami kunci spesifikasi, jumlah, dan jadwal produksi. DP, lalu produksi dimulai.</p></div>
+    <div class="proc-row"><span class="n">4.</span><div class="ph" style="--c:#4a2e25;--img:url('https://images.unsplash.com/photo-1605518216938-7c31b7b14ad0?w=400&q=70')"></div><h3>Produksi</h3><p>Printing, cutting, jahit, dan finishing dengan update progres berkala.</p></div>
+    <div class="proc-row"><span class="n">5.</span><div class="ph" style="--c:#7d5646;--img:url('https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=400&q=70')"></div><h3>QC &amp; packing</h3><p>Setiap pcs dicek, diberi parfum, dan dikemas — bisa pakai packaging brand kamu sendiri.</p></div>
+    <div class="proc-row"><span class="n">6.</span><div class="ph" style="--c:#3f2a22;--img:url('https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=400&q=70')"></div><h3>Kirim</h3><p>Barang jadi dikirim ke gudang atau langsung ke alamat kamu di seluruh Indonesia.</p></div>
+  </div>
+</section>
+
+<!-- ============ BAND ============ -->
+<section class="band">
+  <div class="ph" style="--c:#6b4a3c;--img:url('https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?w=2000&q=80')"></div>
+  <div class="wrap">
+    <h2 class="rv">From thread to brand — every motif deserves to be worn</h2>
+    <p class="rv">Warna yang tepat, bahan yang nyaman, dan detail yang rapi. Itu standar kami untuk setiap koleksi.</p>
+  </div>
+</section>
+
+<!-- ============ PORTFOLIO ============ -->
+<section class="portfolio wrap" id="portfolio">
+  <div class="head-row">
+    <div class="shead rv"><sup>Selected</sup><h2>Portfolio</h2></div>
+    <a href="#contact" class="more rv">Lihat katalog ›</a>
+  </div>
+  <!-- GANTI dengan project asli: foto, nama brand, dan deskripsi -->
+  <div class="pf-grid">
+    <article class="pf zoom rv">
+      <div class="ph" style="--c:#8a5a48;--img:url('https://images.unsplash.com/photo-1609357605129-26f69add5d6e?w=1000&q=80')"></div>
+      <h3>Nama Brand A</h3><div class="tag">Hijab voile · 2.000 pcs</div><p>Koleksi Ramadan dengan motif floral lembut dan cool touch finish.</p><a href="#" class="more">Lihat project ›</a>
+    </article>
+    <article class="pf zoom rv">
+      <div class="ph" style="--c:#5e3d31;--img:url('https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=1000&q=80')"></div>
+      <h3>Nama Brand B</h3><div class="tag">Gamis &amp; outer · Full production</div><p>Dari desain motif sampai packing — siap launching dalam satu paket.</p><a href="#" class="more">Lihat project ›</a>
+    </article>
+    <article class="pf zoom rv">
+      <div class="ph" style="--c:#4a2e25;--img:url('https://images.unsplash.com/photo-1577212017184-80cc0da11082?w=1000&q=80')"></div>
+      <h3>Nama Tim C</h3><div class="tag">Jersey sublimasi · 300 pcs</div><p>Jersey full print dengan nama dan nomor punggung untuk turnamen.</p><a href="#" class="more">Lihat project ›</a>
+    </article>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="faq wrap" id="faq">
+  <div class="faq-grid">
+    <div class="shead rv"><sup>Your</sup><h2>Questions</h2></div>
+    <div class="rv">
+      <!-- GANTI jawaban sesuai kebijakan brand kamu -->
+      <div class="faq-item open"><button class="faq-q">Berapa minimum order?<i>+</i></button><div class="faq-a"><div><p>Minimum order berbeda untuk setiap produk dan metode. Hubungi tim kami untuk detail MOQ hijab, pakaian muslim, maupun jersey.</p></div></div></div>
+      <div class="faq-item"><button class="faq-q">Apakah bisa cetak sampel dulu?<i>+</i></button><div class="faq-a"><div><p>Bisa. Kami sarankan selalu sampling sebelum produksi agar warna, bahan, dan ukuran sesuai harapan.</p></div></div></div>
+      <div class="faq-item"><button class="faq-q">Saya belum punya desain, bisa dibantu?<i>+</i></button><div class="faq-a"><div><p>Tentu. Tim desain kami bisa membuat motif, menyusun konsep koleksi, sampai menyiapkan label dan hangtag.</p></div></div></div>
+      <div class="faq-item"><button class="faq-q">Berapa lama waktu produksi?<i>+</i></button><div class="faq-a"><div><p>Tergantung jumlah dan jenis produk. Estimasi jadwal akan kami berikan setelah sampel disetujui.</p></div></div></div>
+      <div class="faq-item"><button class="faq-q">Format file desain apa yang diterima?<i>+</i></button><div class="faq-a"><div><p>File resolusi tinggi (TIFF, PSD, PDF, atau AI) dengan ukuran sesuai pola. Tim kami akan cek file sebelum dicetak.</p></div></div></div>
+      <div class="faq-item"><button class="faq-q">Apakah bisa kirim ke luar kota?<i>+</i></button><div class="faq-a"><div><p>Bisa, kami melayani pengiriman ke seluruh Indonesia melalui ekspedisi pilihan.</p></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="cta" id="contact">
+  <div class="float a ph" style="--c:#8a5a48;--img:url('https://images.unsplash.com/photo-1609357605129-26f69add5d6e?w=400&q=70')"></div>
+  <div class="float b ph" style="--c:#5e3d31;--img:url('https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=400&q=70')"></div>
+  <div class="float c ph" style="--c:#6b4a3c;--img:url('https://images.unsplash.com/photo-1558171813-4c088753af8f?w=500&q=70')"></div>
+  <div class="float d ph" style="--c:#4a2e25;--img:url('https://images.unsplash.com/photo-1577212017184-80cc0da11082?w=400&q=70')"></div>
+  <div class="float e ph" style="--c:#7d5646;--img:url('https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=300&q=70')"></div>
+  <div class="wrap">
+    <h2 class="rv">Ready to print<br>your next collection?</h2>
+    <p class="rv">Ceritakan koleksi yang ingin kamu buat. Tim kami siap bantu dari sampel pertama.</p>
+    <div class="btns rv">
+      <a href="#" class="pill dark js-wa">Chat WhatsApp</a>
+      <a href="mailto:hello@bokirandco.com" class="pill line">Kirim email</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div><h4>Bokir &amp; Co.</h4><ul>
+        <li>Workshop: Jl. Contoh No. 00, Kota, Provinsi</li>
+        <li>Email: <a href="mailto:hello@bokirandco.com">hello@bokirandco.com</a></li>
+        <li>WhatsApp: <a href="#" class="js-wa" id="waText">+62 812 0000 0000</a></li>
+        <li>Senin – Sabtu, 08.00 – 17.00</li></ul></div>
+      <div><h4>Follow</h4><ul><li><a href="#">Instagram</a></li><li><a href="#">TikTok</a></li><li><a href="#">Shopee</a></li><li><a href="#">YouTube</a></li></ul></div>
+      <div class="r"><h4>All rights reserved <span id="yr"></span></h4><ul><li><a href="#top">Back on top</a></li><li><a href="#faq">FAQ</a></li><li><a href="#">Privacy policy</a></li></ul></div>
+    </div>
+    <div class="bigmark">BOKIR &amp; CO.</div>
+  </div>
+</footer>
+
+<a href="#" class="wa js-wa" aria-label="Chat WhatsApp"><i></i><span>Chat kami</span></a>
+
+<script>
+/* ===== KONFIGURASI — ganti di sini ===== */
+const WA_NUMBER = "6281200000000";   // format 62xxx tanpa + dan tanpa spasi
+const WA_TEXT   = "Halo Bokir & Co., saya ingin konsultasi printing / produksi.";
+const VOILE_COLORS = [ // [nama, hex, warna teks label]
+  ["Broken White","#EFE9DF","#2E1A14"],["Cream","#E4D3B8","#2E1A14"],["Milo","#B99A7E","#fff"],["Mocca","#8B6A55","#fff"],
+  ["Dusty Pink","#D8AFA8","#2E1A14"],["Terracotta","#B5654A","#fff"],["Maroon","#6E2A2C","#fff"],["Lilac","#B9A7C6","#2E1A14"],
+  ["Sage","#A9B59C","#2E1A14"],["Olive","#6D6B45","#fff"],["Navy","#26324A","#fff"],["Black","#1C1716","#fff"]
+];
+/* ======================================= */
+
+const waLink = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(WA_TEXT)}`;
+document.querySelectorAll('.js-wa').forEach(a=>{a.href=waLink;a.target="_blank";a.rel="noopener"});
+
+// Swatches warna
+const sw=document.getElementById('swatches'),swName=document.getElementById('swName');
+VOILE_COLORS.forEach(([n,h,t],i)=>{
+  const d=document.createElement('div');d.className='sw';d.style.setProperty('--sw',h);d.style.setProperty('--t',t);
+  d.innerHTML=`<span>${String(i+1).padStart(2,'0')}</span>`;
+  const show=()=>swName.textContent=`${String(i+1).padStart(2,'0')} — ${n}`;
+  d.addEventListener('mouseenter',show);d.addEventListener('click',show);
+  sw.appendChild(d);
+});
+
+// Nav solid saat lewat hero
+const nav=document.getElementById('nav');
+const onScroll=()=>nav.classList.toggle('solid',scrollY>innerHeight*.8);
+addEventListener('scroll',onScroll,{passive:true});onScroll();
+
+// Mobile menu
+document.getElementById('burger').onclick=()=>document.body.classList.toggle('open');
+document.querySelectorAll('#drawer a').forEach(a=>a.onclick=()=>document.body.classList.remove('open'));
+
+// Reveal saat scroll
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.1});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+// Process: baris aktif ikut hover
+const rows=document.querySelectorAll('.proc-row');
+rows.forEach(r=>r.addEventListener('mouseenter',()=>{rows.forEach(x=>x.classList.remove('active'));r.classList.add('active')}));
+
+// FAQ
+document.querySelectorAll('.faq-q').forEach(b=>b.onclick=()=>b.parentElement.classList.toggle('open'));
+
+// Parallax gambar melayang di CTA
+const fl=document.querySelectorAll('.float'),ct=document.getElementById('contact');
+addEventListener('scroll',()=>{const c=ct.getBoundingClientRect().top;fl.forEach((f,i)=>f.style.transform=`translateY(${c*(.06+i*.025)}px)`)},{passive:true});
+
+document.getElementById('yr').textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
